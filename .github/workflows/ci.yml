@@ -65,9 +65,6 @@ jobs:
 
   dapp:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: dapp
     env:
       NODE_OPTIONS: --no-deprecation
       VITE_SIMPLY_VEST_ADDRESS: "0x0000000000000000000000000000000000000000"
@@ -79,7 +76,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: dapp/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
