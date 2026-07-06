@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { createWalletClient, custom, type Address } from "viem";
 import { arcTestnet } from "./arc-chain";
+import { formatError } from "./errors";
 
 export function useWallet() {
   const [address, setAddress] = useState<Address | null>(null);
@@ -46,7 +47,7 @@ export function useWallet() {
         setChainId(id2);
       }
     } catch (e) {
-      setError((e as Error).message);
+      setError(formatError(e));
     }
   }, [client]);
 

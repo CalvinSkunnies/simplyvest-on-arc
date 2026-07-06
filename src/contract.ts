@@ -8,7 +8,9 @@ import {
   type Hash,
   type TransactionReceipt,
   parseUnits,
+  type UserRejectedRequestError,
 } from "viem";
+import { formatError } from "./errors";
 import { arcTestnet } from "./arc-chain";
 import { SIMPLY_VEST_ABI } from "./abi";
 
@@ -73,7 +75,7 @@ export function useContract() {
         const result = await fn();
         return result;
       } catch (e) {
-        setError((e as Error).message);
+        setError(formatError(e));
         return undefined;
       } finally {
         setLoading(false);
