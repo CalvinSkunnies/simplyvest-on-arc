@@ -41,18 +41,10 @@ interface ISimplyVest {
     );
 
     event TokensClaimed(
-        bytes32 indexed streamId,
-        address indexed recipient,
-        uint256 amount,
-        uint256 claimed,
-        uint256 totalClaimed
+        bytes32 indexed streamId, address indexed recipient, uint256 amount, uint256 claimed, uint256 totalClaimed
     );
 
-    event StreamCompleted(
-        bytes32 indexed streamId,
-        address indexed recipient,
-        uint256 totalAmount
-    );
+    event StreamCompleted(bytes32 indexed streamId, address indexed recipient, uint256 totalAmount);
 
     event StreamCancelled(
         bytes32 indexed streamId,
@@ -71,22 +63,12 @@ interface ISimplyVest {
         address milestoneAuthority
     );
 
-    event MilestoneTriggered(
-        bytes32 indexed streamId,
-        address indexed milestoneAuthority
-    );
+    event MilestoneTriggered(bytes32 indexed streamId, address indexed milestoneAuthority);
 
-    event MilestoneCompleted(
-        bytes32 indexed streamId,
-        address indexed recipient,
-        uint256 amount
-    );
+    event MilestoneCompleted(bytes32 indexed streamId, address indexed recipient, uint256 amount);
 
     event MilestoneCancelled(
-        bytes32 indexed streamId,
-        address indexed creator,
-        address indexed recipient,
-        uint256 returnedToCreator
+        bytes32 indexed streamId, address indexed creator, address indexed recipient, uint256 returnedToCreator
     );
 
     // --- Errors ---
@@ -126,12 +108,9 @@ interface ISimplyVest {
 
     // --- Milestone Functions ---
 
-    function createMilestoneStream(
-        address recipient,
-        address token,
-        uint256 amount,
-        address milestoneAuthority
-    ) external returns (bytes32 streamId);
+    function createMilestoneStream(address recipient, address token, uint256 amount, address milestoneAuthority)
+        external
+        returns (bytes32 streamId);
 
     function triggerMilestone(bytes32 streamId) external;
 

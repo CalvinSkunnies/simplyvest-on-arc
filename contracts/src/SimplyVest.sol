@@ -109,12 +109,10 @@ contract SimplyVest is ISimplyVest {
     //  Milestone-gated Vesting Streams
     // ──────────────────────────────────────────────
 
-    function createMilestoneStream(
-        address recipient,
-        address token,
-        uint256 amount,
-        address milestoneAuthority
-    ) external returns (bytes32 streamId) {
+    function createMilestoneStream(address recipient, address token, uint256 amount, address milestoneAuthority)
+        external
+        returns (bytes32 streamId)
+    {
         if (amount == 0) revert ZeroAmount();
         if (recipient == address(0)) revert InvalidRecipient();
         if (milestoneAuthority == address(0)) revert InvalidMilestoneAuthority();
