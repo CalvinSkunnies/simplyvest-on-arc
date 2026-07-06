@@ -62,3 +62,30 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  dapp:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dapp
+    env:
+      NODE_OPTIONS: --no-deprecation
+      VITE_SIMPLY_VEST_ADDRESS: "0x0000000000000000000000000000000000000000"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: dapp/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
