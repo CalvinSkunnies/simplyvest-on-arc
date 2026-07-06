@@ -2,6 +2,7 @@
 pragma solidity ^0.8.28;
 
 import {Script} from "forge-std/Script.sol";
+import {console} from "forge-std/console.sol";
 import {SimplyVest} from "../src/SimplyVest.sol";
 
 contract DeploySimplyVest is Script {
