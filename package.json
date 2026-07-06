@@ -1,0 +1,17 @@
+{
+  "name": "simplyvest-arc",
+  "private": true,
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test",
+    "test:verbose": "forge test -vvv",
+    "deploy": "forge script script/Deploy.s.sol:DeploySimplyVest --rpc-url arc_testnet --broadcast",
+    "deploy:safe": "forge script script/Deploy.s.sol:DeploySimplyVestSafe --rpc-url arc_testnet --broadcast --sender $DEPLOYER",
+    "verify": "forge verify-contract $CONTRACT_ADDRESS src/SimplyVest.sol:SimplyVest --rpc-url arc_testnet",
+    "lint": "forge fmt --check",
+    "format": "forge fmt"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
