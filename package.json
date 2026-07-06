@@ -2,7 +2,7 @@
   "name": "simplyvest-arc",
   "private": true,
   "scripts": {
-    "build": "forge build",
+    "build:contracts": "forge build",
     "test": "forge test",
     "test:verbose": "forge test -vvv",
     "deploy": "forge script script/Deploy.s.sol:DeploySimplyVest --rpc-url arc_testnet --broadcast",

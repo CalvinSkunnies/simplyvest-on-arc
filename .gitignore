@@ -4,3 +4,4 @@ dist/
 broadcast/
 cache/
 out/
+*.tsbuildinfo
