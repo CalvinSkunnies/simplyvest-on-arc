@@ -37,7 +37,7 @@ export function useWallet() {
               {
                 chainId: `0x${arcTestnet.id.toString(16)}`,
                 chainName: arcTestnet.name,
-                nativeCurrency: arcTestnet.nativeCurrency,
+                nativeCurrency: { name: "USDC", symbol: "USDC", decimals: 6 },
                 rpcUrls: [arcTestnet.rpcUrls.default.http[0]],
               },
             ],
