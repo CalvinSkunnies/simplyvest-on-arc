@@ -2,8 +2,11 @@
   "name": "simplyvest-arc",
   "private": true,
   "scripts": {
+    "build": "cd app && npm run build",
+    "dev": "cd app && npm run dev",
     "build:contracts": "cd contracts && forge build",
     "test": "cd contracts && forge test",
+    "test:validation": "cd app && node --experimental-strip-types --test src/__tests__/stream-validation.test.ts",
     "test:verbose": "cd contracts && forge test -vvv",
     "deploy": "cd contracts && forge script script/Deploy.s.sol:DeploySimplyVest --rpc-url arc_testnet --broadcast",
     "deploy:safe": "cd contracts && forge script script/Deploy.s.sol:DeploySimplyVestSafe --rpc-url arc_testnet --broadcast",
