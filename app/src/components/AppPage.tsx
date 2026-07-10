@@ -7,10 +7,11 @@ import ThemeToggle from "./ThemeToggle";
 import Dashboard from "./Dashboard";
 import CreateStream from "./CreateStream";
 import CreateMilestoneStream from "./CreateMilestoneStream";
+import BatchCreateStreams from "./BatchCreateStreams";
 import StreamList from "./StreamList";
 import TxToast from "./TxToast";
 
-type Tab = "create" | "milestone" | "streams";
+type Tab = "create" | "batch" | "milestone" | "streams";
 
 export default function AppPage() {
   const navigate = useNavigate();
@@ -60,6 +61,7 @@ export default function AppPage() {
             [
               ["streams", "Streams"],
               ["create", "New Stream"],
+              ["batch", "Batch"],
               ["milestone", "New Milestone"],
             ] as [Tab, string][]
           ).map(([id, label]) => (
@@ -80,6 +82,16 @@ export default function AppPage() {
         {tab === "create" && (
           <CreateStream
             onCreate={contract.createStream}
+            loading={contract.loading}
+          />
+        )}
+        {tab === "batch" && (
+          <BatchCreateStreams
+            onCreate={(inputs) => {
+              const amt = inputs.reduce((s, i) => s + Number(i.amount), 0);
+              if (amt <= 0) return;
+              contract.batchCreateStreams(inputs);
+            }}
             loading={contract.loading}
           />
         )}

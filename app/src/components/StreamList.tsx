@@ -22,9 +22,12 @@ export default function StreamList({ address, contract }: Props) {
   const [claimable, setClaimable] = useState<Record<string, bigint>>({});
   const [tab, setTab] = useState<"all" | "stream" | "milestone">("all");
   const [withdrawAmounts, setWithdrawAmounts] = useState<Record<string, string>>({});
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!address) return;
+    setLoading(true);
     const load = async () => {
       const sc = await pc().readContract({
         address: CONTRACT, abi: SIMPLY_VEST_ABI, functionName: "getStreamCount",
@@ -61,9 +64,10 @@ export default function StreamList({ address, contract }: Props) {
       setStreams(sMap);
       setMilestones(mMap);
       setClaimable(cMap);
+      setLoading(false);
     };
     load();
-  }, [address, contract]);
+  }, [address, contract.txHash, refreshKey]);
 
   const myStreams = Object.entries(streams).filter(
     ([, s]) => s.creator.toLowerCase() === address.toLowerCase() || s.recipient.toLowerCase() === address.toLowerCase()
@@ -86,18 +90,29 @@ export default function StreamList({ address, contract }: Props) {
     ["milestone", "Milestone", myMilestones.length],
   ] as const;
 
+  if (loading) {
+    return (
+      <div className="text-center py-16">
+        <p className="text-text-muted text-lg">Loading streams...</p>
+      </div>
+    );
+  }
+
   if (all.length === 0) {
     return (
       <div className="text-center py-16">
         <p className="text-text-muted text-lg">No streams yet</p>
         <p className="text-text-muted text-sm mt-1">Create one to get started</p>
+        <button onClick={() => setRefreshKey(k => k + 1)} className="btn-secondary text-sm mt-4 px-4 py-2">
+          Refresh
+        </button>
       </div>
     );
   }
 
   return (
     <div className="animate-fade-in">
-      <div className="flex gap-2 mb-6 border-b border-base-500/20 pb-3">
+      <div className="flex items-center gap-2 mb-6 border-b border-base-500/20 pb-3">
         {tabs.map(([id, label, count]) => (
           <button
             key={id}
@@ -112,6 +127,13 @@ export default function StreamList({ address, contract }: Props) {
             <span className="ml-2 text-xs opacity-60">{count}</span>
           </button>
         ))}
+        <button
+          onClick={() => setRefreshKey(k => k + 1)}
+          className="ml-auto px-3 py-2 rounded-lg text-sm text-text-muted hover:text-text-primary transition-colors"
+          title="Refresh"
+        >
+          ↻
+        </button>
       </div>
 
       <div className="space-y-4">

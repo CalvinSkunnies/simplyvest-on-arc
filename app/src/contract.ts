@@ -212,6 +212,42 @@ export function useContract() {
     [exec]
   );
 
+  const batchCreateStreams = useCallback(
+    async (
+      inputs: Array<{
+        recipient: Address;
+        token: Address;
+        amount: string;
+        startTime: number;
+        cliffTime: number;
+        endTime: number;
+      }>,
+    ) => {
+      return exec(async () => {
+        const wc = walletClient();
+        const [addr] = await wc.requestAddresses();
+        const parsed = inputs.map(i => ({
+          recipient: i.recipient,
+          token: i.token,
+          amount: parseUnits(i.amount, 18),
+          startTime: BigInt(i.startTime),
+          cliffTime: BigInt(i.cliffTime),
+          endTime: BigInt(i.endTime),
+        }));
+        const tx = await wc.writeContract({
+          address: CONTRACT,
+          abi: SIMPLY_VEST_ABI,
+          functionName: "batchCreateStreams",
+          args: [parsed],
+          account: addr,
+        });
+        setTxHash(tx);
+        return wait(tx);
+      });
+    },
+    [exec],
+  );
+
   const depositMore = useCallback(
     async (streamId: `0x${string}`, amount: string) => {
       return exec(async () => {
@@ -356,6 +392,7 @@ export function useContract() {
     createStream,
     withdraw,
     cancel,
+    batchCreateStreams,
     depositMore,
     transferStream,
     transferMilestoneStream,
