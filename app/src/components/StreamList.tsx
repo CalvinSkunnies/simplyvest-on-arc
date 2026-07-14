@@ -27,46 +27,57 @@ export default function StreamList({ address, contract }: Props) {
 
   useEffect(() => {
     if (!address) return;
+    let cancelled = false;
     setLoading(true);
     const load = async () => {
-      const sc = await pc().readContract({
-        address: CONTRACT, abi: SIMPLY_VEST_ABI, functionName: "getStreamCount",
-      });
-      const msc = await pc().readContract({
-        address: CONTRACT, abi: SIMPLY_VEST_ABI, functionName: "getMilestoneStreamCount",
-      });
-      const sIds: `0x${string}`[] = [];
-      const mIds: `0x${string}`[] = [];
-      for (let i = 0; i < Number(sc); i++) {
-        sIds.push(await pc().readContract({
-          address: CONTRACT, abi: SIMPLY_VEST_ABI, functionName: "streamIds", args: [BigInt(i)],
-        }));
-      }
-      for (let i = 0; i < Number(msc); i++) {
-        mIds.push(await pc().readContract({
-          address: CONTRACT, abi: SIMPLY_VEST_ABI, functionName: "milestoneStreamIds", args: [BigInt(i)],
-        }));
-      }
-      setStreamIds(sIds);
-      setMilestoneIds(mIds);
+      try {
+        const sc = await pc().readContract({
+          address: CONTRACT, abi: SIMPLY_VEST_ABI, functionName: "getStreamCount",
+        });
+        const msc = await pc().readContract({
+          address: CONTRACT, abi: SIMPLY_VEST_ABI, functionName: "getMilestoneStreamCount",
+        });
+        const sIds: `0x${string}`[] = [];
+        const mIds: `0x${string}`[] = [];
+        for (let i = 0; i < Number(sc); i++) {
+          sIds.push(await pc().readContract({
+            address: CONTRACT, abi: SIMPLY_VEST_ABI, functionName: "streamIds", args: [BigInt(i)],
+          }));
+        }
+        for (let i = 0; i < Number(msc); i++) {
+          mIds.push(await pc().readContract({
+            address: CONTRACT, abi: SIMPLY_VEST_ABI, functionName: "milestoneStreamIds", args: [BigInt(i)],
+          }));
+        }
+        if (cancelled) return;
+        setStreamIds(sIds);
+        setMilestoneIds(mIds);
 
-      const sMap: Record<string, StreamData> = {};
-      const mMap: Record<string, MilestoneStreamData> = {};
-      const cMap: Record<string, bigint> = {};
-      for (const id of sIds) {
-        const s = await contract.fetchStream(id);
-        if (s) { sMap[id] = s; cMap[id] = await contract.fetchClaimable(id); }
+        const sMap: Record<string, StreamData> = {};
+        const mMap: Record<string, MilestoneStreamData> = {};
+        const cMap: Record<string, bigint> = {};
+        for (const id of sIds) {
+          if (cancelled) return;
+          const s = await contract.fetchStream(id);
+          if (s) { sMap[id] = s; cMap[id] = await contract.fetchClaimable(id); }
+        }
+        for (const id of mIds) {
+          if (cancelled) return;
+          const m = await contract.fetchMilestoneStream(id);
+          if (m) { mMap[id] = m; cMap[id] = await contract.fetchMilestoneClaimable(id); }
+        }
+        if (cancelled) return;
+        setStreams(sMap);
+        setMilestones(mMap);
+        setClaimable(cMap);
+      } catch (e) {
+        console.error("Failed to load streams", e);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-      for (const id of mIds) {
-        const m = await contract.fetchMilestoneStream(id);
-        if (m) { mMap[id] = m; cMap[id] = await contract.fetchMilestoneClaimable(id); }
-      }
-      setStreams(sMap);
-      setMilestones(mMap);
-      setClaimable(cMap);
-      setLoading(false);
     };
     load();
+    return () => { cancelled = true; };
   }, [address, contract.txHash, contract.loading, refreshKey]);
 
   const myStreams = Object.entries(streams).filter(
