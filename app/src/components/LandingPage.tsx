@@ -99,6 +99,10 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2.5">
             <img src="/favicon.svg" alt="SimplyVest" className="h-8" />
+            <span className="text-lg font-display font-bold tracking-tight">
+              <span className="text-text-primary">Simply</span>
+              <span className="text-plum-400">Vest</span>
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
@@ -353,6 +357,7 @@ export default function LandingPage() {
             <div className="col-span-2 md:col-span-1">
               <div className="flex items-center gap-2.5 mb-3">
                 <img src="/favicon.svg" alt="SimplyVest" className="h-7" />
+                <span className="font-display font-bold text-text-primary">SimplyVest</span>
               </div>
               <p className="text-text-muted text-xs leading-relaxed max-w-xs">
                 On-chain vesting streams on Arc Testnet. Open source, trust-minimized, and fully on-chain.
