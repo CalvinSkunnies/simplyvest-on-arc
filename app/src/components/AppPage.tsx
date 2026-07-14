@@ -28,9 +28,8 @@ export default function AppPage() {
     <div className="min-h-screen bg-bg">
       <header className="sticky top-0 z-50 glass border-b border-base-500/20">
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-          <button onClick={() => navigate("/")} className="text-lg font-display font-bold tracking-tight hover:opacity-80 transition-opacity">
-            <span className="text-text-primary">Simply</span>
-            <span className="text-plum-400">Vest</span>
+          <button onClick={() => navigate("/")} className="hover:opacity-80 transition-opacity">
+            <img src="/favicon.svg" alt="SimplyVest" className="h-8" />
           </button>
           <div className="flex items-center gap-3">
             <ThemeToggle />
