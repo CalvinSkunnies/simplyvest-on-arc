@@ -18,7 +18,7 @@ jobs:
           submodules: recursive
 
       - name: Install Foundry
-        uses: foundry-rs/foundryup@v1
+        uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
 
@@ -67,7 +67,7 @@ jobs:
         working-directory: app
     env:
       NODE_OPTIONS: --no-deprecation
-      VITE_FACTORY_ADDRESS: "0x0000000000000000000000000000000000000000"
+      VITE_SIMPLY_VEST_ADDRESS: "0x0000000000000000000000000000000000000000"
     steps:
       - uses: actions/checkout@v4
 

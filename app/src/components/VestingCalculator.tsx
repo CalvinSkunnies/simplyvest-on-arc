@@ -6,8 +6,11 @@ import { SIMPLY_VEST_ABI } from "../abi";
 import type { StreamData, MilestoneStreamData } from "../contract";
 import VestingCircle from "./VestingCircle";
 import VestingCurve from "./VestingCurve";
-import { nowUnix, fromDatetimeLocal } from "../stream/validation";
+import { nowUnix, toDatetimeLocal, fromDatetimeLocal } from "../stream/validation";
 
+const RAW_ADDRESS = import.meta.env.VITE_SIMPLY_VEST_ADDRESS;
+if (!RAW_ADDRESS) throw new Error("VITE_SIMPLY_VEST_ADDRESS is not set");
+const CONTRACT = RAW_ADDRESS as Address;
 const pc = () => createPublicClient({ chain: arcTestnet, transport: http() });
 
 type CalcParams =
@@ -94,12 +97,12 @@ export default function VestingCalculator({ address, contract }: Props) {
       setLoadingStreams(true);
       try {
         const sc = await pc().readContract({
-          address: contract.address,
+          address: CONTRACT,
           abi: SIMPLY_VEST_ABI,
           functionName: "getStreamCount",
         });
         const msc = await pc().readContract({
-          address: contract.address,
+          address: CONTRACT,
           abi: SIMPLY_VEST_ABI,
           functionName: "getMilestoneStreamCount",
         });
@@ -107,7 +110,7 @@ export default function VestingCalculator({ address, contract }: Props) {
         const seen = new Set<string>();
         for (let i = 0; i < Number(sc); i++) {
           const id = (await pc().readContract({
-            address: contract.address,
+            address: CONTRACT,
             abi: SIMPLY_VEST_ABI,
             functionName: "streamIds",
             args: [BigInt(i)],
@@ -128,7 +131,7 @@ export default function VestingCalculator({ address, contract }: Props) {
         }
         for (let i = 0; i < Number(msc); i++) {
           const id = (await pc().readContract({
-            address: contract.address,
+            address: CONTRACT,
             abi: SIMPLY_VEST_ABI,
             functionName: "milestoneStreamIds",
             args: [BigInt(i)],
