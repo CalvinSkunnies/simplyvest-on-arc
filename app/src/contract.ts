@@ -14,7 +14,9 @@ import { formatError } from "./errors";
 import { arcTestnet } from "./arc-chain";
 import { SIMPLY_VEST_ABI } from "./abi";
 
-const CONTRACT = import.meta.env.VITE_SIMPLY_VEST_ADDRESS as Address;
+const RAW_ADDRESS = import.meta.env.VITE_SIMPLY_VEST_ADDRESS;
+if (!RAW_ADDRESS) throw new Error("VITE_SIMPLY_VEST_ADDRESS is not set");
+const CONTRACT = RAW_ADDRESS as Address;
 const USDC = "0x07865c6E87B9F70255377e024ace6630C1Eaa37F";
 
 function publicClient() {

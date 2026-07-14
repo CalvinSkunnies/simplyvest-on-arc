@@ -8,7 +8,9 @@ import VestingCircle from "./VestingCircle";
 import VestingCurve from "./VestingCurve";
 import { nowUnix, toDatetimeLocal, fromDatetimeLocal } from "../stream/validation";
 
-const CONTRACT = import.meta.env.VITE_SIMPLY_VEST_ADDRESS as Address;
+const RAW_ADDRESS = import.meta.env.VITE_SIMPLY_VEST_ADDRESS;
+if (!RAW_ADDRESS) throw new Error("VITE_SIMPLY_VEST_ADDRESS is not set");
+const CONTRACT = RAW_ADDRESS as Address;
 const pc = () => createPublicClient({ chain: arcTestnet, transport: http() });
 
 type CalcParams =
