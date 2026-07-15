@@ -8,11 +8,13 @@ import {
   type Hash,
   type TransactionReceipt,
   parseUnits,
+  type UserRejectedRequestError,
 } from "viem";
 import { formatError } from "./errors";
 import { arcTestnet } from "./arc-chain";
 import { SIMPLY_VEST_ABI } from "./abi";
 
+const CONTRACT = import.meta.env.VITE_SIMPLY_VEST_ADDRESS as Address;
 const USDC = "0x07865c6E87B9F70255377e024ace6630C1Eaa37F";
 
 function publicClient() {
@@ -53,11 +55,10 @@ export interface MilestoneStreamData {
   cancelled: boolean;
 }
 
-export function useContract(contractAddress?: Address) {
+export function useContract() {
   const [loading, setLoading] = useState(false);
   const [txHash, setTxHash] = useState<Hash | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const address = contractAddress;
 
   const reset = useCallback(() => {
     setLoading(false);
@@ -96,7 +97,7 @@ export function useContract(contractAddress?: Address) {
         const wc = walletClient();
         const [addr] = await wc.requestAddresses();
         const tx = await wc.writeContract({
-          address: address!,
+          address: CONTRACT,
           abi: SIMPLY_VEST_ABI,
           functionName: "createStream",
           args: [
@@ -122,7 +123,7 @@ export function useContract(contractAddress?: Address) {
         const wc = walletClient();
         const [addr] = await wc.requestAddresses();
         const tx = await wc.writeContract({
-          address: address!,
+          address: CONTRACT,
           abi: SIMPLY_VEST_ABI,
           functionName: "withdraw",
           args: [streamId, parseUnits(amount, 18)],
@@ -141,7 +142,7 @@ export function useContract(contractAddress?: Address) {
         const wc = walletClient();
         const [addr] = await wc.requestAddresses();
         const tx = await wc.writeContract({
-          address: address!,
+          address: CONTRACT,
           abi: SIMPLY_VEST_ABI,
           functionName: "cancel",
           args: [streamId],
@@ -160,7 +161,7 @@ export function useContract(contractAddress?: Address) {
         const wc = walletClient();
         const [addr] = await wc.requestAddresses();
         const tx = await wc.writeContract({
-          address: address!,
+          address: CONTRACT,
           abi: SIMPLY_VEST_ABI,
           functionName: "createMilestoneStream",
           args: [recipient, token, parseUnits(amount, 18), milestoneAuthority],
@@ -179,7 +180,7 @@ export function useContract(contractAddress?: Address) {
         const wc = walletClient();
         const [addr] = await wc.requestAddresses();
         const tx = await wc.writeContract({
-          address: address!,
+          address: CONTRACT,
           abi: SIMPLY_VEST_ABI,
           functionName: "triggerMilestone",
           args: [streamId],
@@ -198,7 +199,7 @@ export function useContract(contractAddress?: Address) {
         const wc = walletClient();
         const [addr] = await wc.requestAddresses();
         const tx = await wc.writeContract({
-          address: address!,
+          address: CONTRACT,
           abi: SIMPLY_VEST_ABI,
           functionName: "withdrawMilestone",
           args: [streamId],
@@ -234,7 +235,7 @@ export function useContract(contractAddress?: Address) {
           endTime: BigInt(i.endTime),
         }));
         const tx = await wc.writeContract({
-          address: address!,
+          address: CONTRACT,
           abi: SIMPLY_VEST_ABI,
           functionName: "batchCreateStreams",
           args: [parsed],
@@ -253,7 +254,7 @@ export function useContract(contractAddress?: Address) {
         const wc = walletClient();
         const [addr] = await wc.requestAddresses();
         const tx = await wc.writeContract({
-          address: address!,
+          address: CONTRACT,
           abi: SIMPLY_VEST_ABI,
           functionName: "depositMore",
           args: [streamId, parseUnits(amount, 18)],
@@ -272,7 +273,7 @@ export function useContract(contractAddress?: Address) {
         const wc = walletClient();
         const [addr] = await wc.requestAddresses();
         const tx = await wc.writeContract({
-          address: address!,
+          address: CONTRACT,
           abi: SIMPLY_VEST_ABI,
           functionName: "transferStream",
           args: [streamId, newRecipient],
@@ -291,7 +292,7 @@ export function useContract(contractAddress?: Address) {
         const wc = walletClient();
         const [addr] = await wc.requestAddresses();
         const tx = await wc.writeContract({
-          address: address!,
+          address: CONTRACT,
           abi: SIMPLY_VEST_ABI,
           functionName: "transferMilestoneStream",
           args: [streamId, newRecipient],
@@ -310,7 +311,7 @@ export function useContract(contractAddress?: Address) {
         const wc = walletClient();
         const [addr] = await wc.requestAddresses();
         const tx = await wc.writeContract({
-          address: address!,
+          address: CONTRACT,
           abi: SIMPLY_VEST_ABI,
           functionName: "cancelMilestone",
           args: [streamId],
@@ -326,7 +327,7 @@ export function useContract(contractAddress?: Address) {
   async function fetchStream(streamId: `0x${string}`): Promise<StreamData | null> {
     try {
       return await publicClient().readContract({
-        address: address!,
+        address: CONTRACT,
         abi: SIMPLY_VEST_ABI,
         functionName: "getStream",
         args: [streamId],
@@ -339,7 +340,7 @@ export function useContract(contractAddress?: Address) {
   async function fetchMilestoneStream(streamId: `0x${string}`): Promise<MilestoneStreamData | null> {
     try {
       return await publicClient().readContract({
-        address: address!,
+        address: CONTRACT,
         abi: SIMPLY_VEST_ABI,
         functionName: "getMilestoneStream",
         args: [streamId],
@@ -351,7 +352,7 @@ export function useContract(contractAddress?: Address) {
 
   async function fetchClaimable(streamId: `0x${string}`): Promise<bigint> {
     return publicClient().readContract({
-      address: address!,
+      address: CONTRACT,
       abi: SIMPLY_VEST_ABI,
       functionName: "getClaimable",
       args: [streamId],
@@ -360,7 +361,7 @@ export function useContract(contractAddress?: Address) {
 
   async function fetchMilestoneClaimable(streamId: `0x${string}`): Promise<bigint> {
     return publicClient().readContract({
-      address: address!,
+      address: CONTRACT,
       abi: SIMPLY_VEST_ABI,
       functionName: "getMilestoneClaimable",
       args: [streamId],
@@ -369,7 +370,7 @@ export function useContract(contractAddress?: Address) {
 
   async function fetchStreamCount(): Promise<bigint> {
     return publicClient().readContract({
-      address: address!,
+      address: CONTRACT,
       abi: SIMPLY_VEST_ABI,
       functionName: "getStreamCount",
     });
@@ -377,7 +378,7 @@ export function useContract(contractAddress?: Address) {
 
   async function fetchMilestoneStreamCount(): Promise<bigint> {
     return publicClient().readContract({
-      address: address!,
+      address: CONTRACT,
       abi: SIMPLY_VEST_ABI,
       functionName: "getMilestoneStreamCount",
     });
@@ -387,7 +388,6 @@ export function useContract(contractAddress?: Address) {
     loading,
     txHash,
     error,
-    address,
     reset,
     createStream,
     withdraw,

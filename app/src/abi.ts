@@ -229,28 +229,3 @@ export const SIMPLY_VEST_ABI = [
     stateMutability: "nonpayable",
   },
 ] as const;
-
-export const FACTORY_ABI = [
-  {
-    type: "function",
-    name: "deploy",
-    inputs: [],
-    outputs: [{ name: "", type: "address" }],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "getUserContract",
-    inputs: [{ name: "user", type: "address" }],
-    outputs: [{ name: "", type: "address" }],
-    stateMutability: "view",
-  },
-  {
-    type: "event",
-    name: "UserContractDeployed",
-    inputs: [
-      { name: "user", type: "address", indexed: true },
-      { name: "contract_", type: "address", indexed: true },
-    ],
-  },
-] as const;
