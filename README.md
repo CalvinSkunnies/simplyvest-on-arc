@@ -1,4 +1,4 @@
-# SimplyVest Arc
+# SimplyVest on Arc
 
 **Issue, vest, and manage tokenized equity for your team — on Arc Testnet.**
 

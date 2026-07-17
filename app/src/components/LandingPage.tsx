@@ -389,12 +389,17 @@ export default function LandingPage() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-base-500/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-text-muted text-xs">
-              MIT License &middot; Chain ID: 5042002
-            </p>
-            <p className="text-text-muted text-xs">
-              Built on <a href="https://www.arc.network/" target="_blank" rel="noopener noreferrer" className="text-plum-400 hover:text-plum-300">Arc Testnet</a>
+           <div className="border-t border-base-500/10 pt-6 flex flex-col items-center gap-2">
+            <div className="flex items-center justify-between w-full">
+              <p className="text-text-muted text-xs">
+                MIT License &middot; Chain ID: 5042002
+              </p>
+              <p className="text-text-muted text-xs">
+                Built on <a href="https://www.arc.network/" target="_blank" rel="noopener noreferrer" className="text-plum-400 hover:text-plum-300">Arc Testnet</a>
+              </p>
+            </div>
+            <p className="text-text-muted text-[10px]">
+              Arc is a trademark of Circle Internet Group, Inc. and/or its affiliates.
             </p>
           </div>
         </div>
