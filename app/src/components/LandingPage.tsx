@@ -374,10 +374,10 @@ export default function LandingPage() {
             <div>
               <h4 className="text-text-muted text-xs font-semibold uppercase tracking-wider mb-4">Developers</h4>
               <ul className="space-y-2">
-                <li><a href="https://github.com/CalvinSkunnies/Simplyvest-Arc" target="_blank" rel="noopener noreferrer" className="text-text-secondary text-sm hover:text-text-primary transition-colors">GitHub</a></li>
-                <li><a href="https://github.com/CalvinSkunnies/Simplyvest-Arc/blob/main/README.md" target="_blank" rel="noopener noreferrer" className="text-text-secondary text-sm hover:text-text-primary transition-colors">README</a></li>
-                <li><a href="https://github.com/CalvinSkunnies/Simplyvest-Arc/blob/main/docs/ARCHITECTURE.md" target="_blank" rel="noopener noreferrer" className="text-text-secondary text-sm hover:text-text-primary transition-colors">Architecture</a></li>
-                <li><a href="https://github.com/CalvinSkunnies/Simplyvest-Arc/blob/main/docs/DEPLOYMENT.md" target="_blank" rel="noopener noreferrer" className="text-text-secondary text-sm hover:text-text-primary transition-colors">Deploy Guide</a></li>
+                <li><a href="https://github.com/CalvinSkunnies/simplyvest-on-arc" target="_blank" rel="noopener noreferrer" className="text-text-secondary text-sm hover:text-text-primary transition-colors">GitHub</a></li>
+                <li><a href="https://github.com/CalvinSkunnies/simplyvest-on-arc/blob/main/README.md" target="_blank" rel="noopener noreferrer" className="text-text-secondary text-sm hover:text-text-primary transition-colors">README</a></li>
+                <li><a href="https://github.com/CalvinSkunnies/simplyvest-on-arc/blob/main/docs/ARCHITECTURE.md" target="_blank" rel="noopener noreferrer" className="text-text-secondary text-sm hover:text-text-primary transition-colors">Architecture</a></li>
+                <li><a href="https://github.com/CalvinSkunnies/simplyvest-on-arc/blob/main/docs/DEPLOYMENT.md" target="_blank" rel="noopener noreferrer" className="text-text-secondary text-sm hover:text-text-primary transition-colors">Deploy Guide</a></li>
               </ul>
             </div>
             <div>
